@@ -1,0 +1,17 @@
+{
+    "name": "andre/workana",
+    "description": "Test for workana",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Andre\\Workana\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Andre Aguayo",
+            "email": "andre.aguayo@hotmail.com"
+        }
+    ],
+    "require": {}
+}
