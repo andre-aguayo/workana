@@ -1,10 +1,12 @@
 <template>
-  <navBar />
-  <router-view />
+  <section>
+    <topNavBar />
+    <router-view />
+  </section>
 </template>
 <script>
-import { navBar } from "./components/navBar.vue";
+import topNavBar from "./components/navBar/topNavBar.vue";
 export default {
-  components: { navBar },
+  components: { topNavBar },
 };
 </script>

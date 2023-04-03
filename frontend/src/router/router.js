@@ -1,13 +1,22 @@
 import { createRouter, createWebHistory } from "vue-router";
-import homePage from "@/components/homePage.vue";
+import HomePage from "@/Pages/HomePage";
+import ProductInformations from "@/Pages/Products/ProductInformations";
+import i18n from "../i18n/index.js";
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      name: "home page",
-      path: "/",
-      component: homePage,
+      name: i18n.global.t("home.title"),
+      path: "",
+      component: HomePage,
+      product: [
+        {
+          name: i18n.global.t("product.title"),
+          path: "/product/:productId",
+          component: ProductInformations,
+        },
+      ],
     },
   ],
 });

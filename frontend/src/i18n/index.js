@@ -8,6 +8,13 @@ const i18n = createI18n({
       home: {
         title: "Pagina inicial",
       },
+      product: {
+        title: "Informaçoes do produto",
+      },
+      navBar: {
+        home: "Inicio",
+        search: "Pesquisar",
+      },
     },
   },
 });
