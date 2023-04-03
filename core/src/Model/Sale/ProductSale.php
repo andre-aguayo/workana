@@ -4,6 +4,7 @@ namespace Src\Model\Sale;
 
 use Exception;
 use Src\Model\BaseModel;
+use Src\Model\Product\Product;
 
 /**
  * Is a parent tables
@@ -18,7 +19,7 @@ class ProductSale extends BaseModel
     public function __construct()
     {
         parent::__construct();
-        $this->requiredColumns = ['sale_id', 'product_id', 'current_value', 'current_tax'];
+        $this->requiredColumns = ['sale_id', 'product_id', 'quantity', 'current_value', 'current_tax'];
         $this->parentName = SaletParent::Sale->value;
     }
 
@@ -32,9 +33,10 @@ class ProductSale extends BaseModel
     public function createMany(array $productSales, int $saleId): bool
     {
         foreach ($productSales as $productSale) {
-            var_dump([...$productSale, 'sale_id' => $saleId]);
-            // $this->create([...$productSale, 'sale_id' => $saleId])
-            //     ?? throw new Exception('Error creating sale.', 400);
+            $this->create([...$productSale, 'sale_id' => $saleId]);
+
+            //discount into product stock the sale
+            (new Product)->productSale($productSale['quantity'], $productSale['product_id']);
         }
         return true;
     }
@@ -46,10 +48,10 @@ class ProductSale extends BaseModel
      */
     public function create(array $values): bool
     {
-        $query = "INSERT INTO product_sales (sale_id, product_id, current_value, current_tax) 
-            VALUES (:sale_id, :product_id, :current_value, :current_tax)";
-
-        $dbResponse = $this->dbConnection->prepare($query);
-        return $dbResponse->execute($values) ?? throw new Exception('Error creating product_sales.', 400);
+        $dbResponse = $this->dbConnection->prepare(
+            "INSERT INTO product_sales (sale_id, product_id, quantity, current_value, current_tax) 
+                     VALUES (:sale_id, :product_id, :quantity, :current_value, :current_tax)"
+        );
+        return $dbResponse->execute($values);
     }
 }

@@ -81,7 +81,7 @@ abstract class BaseModel
 
         $this->dbResponse = $this->dbConnection->prepare($query);
         $this->dbResponse->execute(['id' => $id]);
-        return $this->dbResponse->fetchAll();
+        return $this->dbResponse->fetch() ?: throw new Exception("Not find product id = $id", 400);
     }
 
     /**
@@ -92,14 +92,13 @@ abstract class BaseModel
     public function getAllWithParent(int $limit = 0, int $offset = 0): array
     {
         $parents = $this->getAll($this->parentName, $limit, $offset);
-
+        $response = [];
         foreach ($parents as $parent) {
             $dbParentResponse = $this->dbConnection->prepare("SELECT * FROM {$this->tableName} ORDER BY id DESC");
             $dbParentResponse->execute();
-            $parent = [...$parent, $this->tableName => $dbParentResponse->fetchAll()];
+            $response[] = [...$parent, $this->tableName => $dbParentResponse->fetchAll()];
         }
-
-        return $parent;
+        return $response;
     }
 
     /**
@@ -127,5 +126,30 @@ abstract class BaseModel
 
         $this->dbResponse = $this->dbConnection->prepare($baseQuery . $valuesQuery . ");");
         return $this->dbResponse->execute($params) ?? throw new Exception("Error creating {$this->tableName}.", 400);
+    }
+
+    public function beginTransaction(): bool
+    {
+        return $this->dbConnection->beginTransaction();
+    }
+
+    public function commit(): bool
+    {
+        return  $this->dbConnection->commit();
+    }
+
+    public function rollBack(): bool
+    {
+        return $this->dbConnection->rollBack();
+    }
+
+    public function getLastInsertId(): int
+    {
+        return $this->dbConnection->lastInsertId();
+    }
+
+    public function __destruct()
+    {
+        $this->dbConnection = null;
     }
 }

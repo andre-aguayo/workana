@@ -2,11 +2,11 @@
 
 namespace Src\Controller;
 
-use Src\Model\Sale\Sale;
+use Src\Services\Sale\SaleService;
 
 class SaleController
 {
-    public function __construct(private Sale $sale = new Sale)
+    public function __construct(private SaleService $sale = new SaleService())
     {
     }
 
@@ -16,6 +16,6 @@ class SaleController
      */
     public function create(array $requestParams)
     {
-        return ['created' => $this->sale->create($requestParams)];
+        return ['created' => $this->sale->sale($requestParams)];
     }
 }

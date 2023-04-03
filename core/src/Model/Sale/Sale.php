@@ -32,30 +32,13 @@ class Sale extends BaseModel
      */
     public function create(array $params): bool
     {
-        try {
-            $this->dbConnection->beginTransaction();
-            $this->dbResponse = $this->dbConnection->prepare(
-                "INSERT INTO {$this->tableName} (total_value, total_tax) VALUES (:total_value, :total_tax);"
-            );
-            //execute or throw exception
-            $this->dbResponse->execute([
-                "total_value" => $params['total_value'],
-                "total_tax" => $params['total_tax']
-            ]) ?? throw new Exception('Error creating sale.', 400);
+        $this->dbResponse = $this->dbConnection->prepare(
+            "INSERT INTO {$this->tableName} (total_value, total_tax) VALUES (:total_value, :total_tax);"
+        );
 
-            //Create ProductSale
-            (new ProductSale)->createMany(
-                $params['product_sales'],
-                $this->dbConnection->lastInsertId()
-            );
-
-            $this->dbConnection->commit();
-        } catch (Exception $e) {
-            $this->dbConnection->rollBack();
-            var_dump($this->dbResponse->errorInfo());
-            throw new Exception($e->getMessage(), 400);
-        }
-
-        return true;
+        return $this->dbResponse->execute([
+            "total_value" => $params['total_value'],
+            "total_tax" => $params['total_tax']
+        ]) ?? throw new Exception("Error creating sale.", 400);
     }
 }
