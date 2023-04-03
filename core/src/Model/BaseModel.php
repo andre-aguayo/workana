@@ -92,10 +92,15 @@ abstract class BaseModel
     public function getAllWithParent(int $limit = 0, int $offset = 0): array
     {
         $parents = $this->getAll($this->parentName, $limit, $offset);
+
         $response = [];
         foreach ($parents as $parent) {
-            $dbParentResponse = $this->dbConnection->prepare("SELECT * FROM {$this->tableName} ORDER BY id DESC");
-            $dbParentResponse->execute();
+            $dbParentResponse = $this->dbConnection->prepare(
+                "SELECT * FROM {$this->tableName} 
+                    WHERE category_id = :category_id ORDER BY id DESC"
+            );
+
+            $dbParentResponse->execute(['category_id' => $parent['id']]);
             $response[] = [...$parent, $this->tableName => $dbParentResponse->fetchAll()];
         }
         return $response;
