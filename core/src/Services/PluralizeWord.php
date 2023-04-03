@@ -2,6 +2,8 @@
 
 namespace Src\Services;
 
+use Exception;
+
 class PluralizeWord
 {
 
@@ -10,8 +12,11 @@ class PluralizeWord
      * @param string $word raw word for plurazile
      * @return string pluralized
      */
-    public function pluralize(string $word): string
+    public function pluralize($word): string
     {
+        if (!is_string($word))
+            throw new Exception('Word require!', 400);
+
         $word = $this->splitCapitainLetters($word);
 
         //get a last lettetr
@@ -30,7 +35,7 @@ class PluralizeWord
      * Process model name to split words
      * @return string  proccessed words
      */
-    public function splitCapitainLetters(string $raw): string
+    private function splitCapitainLetters(string $raw): string
     {
         //get last word from namespace
         if (str_contains($raw, '\\')) {
