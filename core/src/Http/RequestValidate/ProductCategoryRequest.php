@@ -10,9 +10,11 @@ class ProductCategoryRequest
             $uriPaths[2] === 'create' &&
             $httpMethod === 'POST' &&
             ( //Product Category request params
+                !empty($request['name']) &&
                 is_string($request['name']) && //check category name
-                is_numeric($request['tax']) && //check tax
+                !empty($request['tax']) && //check tax
                 $request['tax'] >= 0 && //check tax
+                is_numeric($request['tax']) && //check tax
                 count($request) === 2 //maximum parameters
             );
     }
