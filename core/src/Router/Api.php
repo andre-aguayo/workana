@@ -19,8 +19,6 @@ class Api
         private string $uri,
         private array $request
     ) {
-        header("Content-Type: application/json");
-
         if ((!is_array($request) || empty($request)) && $httpMethod === 'POST')
             $this->request = json_decode(file_get_contents("php://input"), true);
     }
