@@ -5,7 +5,6 @@ namespace Src\Model;
 use Exception;
 use Src\Config\Database;
 use Src\Services\PluralizeWord;
-use PDO;
 
 abstract class BaseModel
 {
@@ -131,21 +130,6 @@ abstract class BaseModel
 
         $this->dbResponse = $this->dbConnection->prepare($baseQuery . $valuesQuery . ");");
         return $this->dbResponse->execute($params) ?? throw new Exception("Error creating {$this->tableName}.", 400);
-    }
-
-    public function beginTransaction(): bool
-    {
-        return $this->dbConnection->beginTransaction();
-    }
-
-    public function commit(): bool
-    {
-        return  $this->dbConnection->commit();
-    }
-
-    public function rollBack(): bool
-    {
-        return $this->dbConnection->rollBack();
     }
 
     public function getLastInsertId(): int

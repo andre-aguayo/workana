@@ -32,7 +32,7 @@ class Database
     {
         $this->pdo = $this->connect();
     }
-
+    
     /**
      * @return PDO conneciton
      */
@@ -70,5 +70,20 @@ class Database
     public function __destruct()
     {
         $this->pdo = null;
+    }
+
+    public function beginTransaction(): bool
+    {
+        return $this->pdo->beginTransaction();
+    }
+
+    public function commit(): bool
+    {
+        return  $this->pdo->commit();
+    }
+
+    public function rollBack(): bool
+    {
+        return $this->pdo->rollBack();
     }
 }

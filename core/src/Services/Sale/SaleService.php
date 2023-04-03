@@ -2,6 +2,7 @@
 
 namespace Src\Services\Sale;
 
+use Src\Config\Database;
 use Exception;
 use Src\Model\Sale\Sale;
 use Src\Model\Product\Product;
@@ -25,7 +26,7 @@ class SaleService implements SaleServiceInterface
         if ($this->verifySale($sale))
             return $this->registrateSale($sale);
 
-        return false;
+        throw new Exception('Invalid operation in sale products.', 400);
     }
 
     /**
@@ -34,40 +35,50 @@ class SaleService implements SaleServiceInterface
      */
     private function verifySale(array $sale): bool
     {
+        $totalTax = 0;
+        $totalValue = 0;
         foreach ($sale['product_sales'] as $productSale) {
             //Eu teria colocado esta requisiçao separada em um product service mas por conveiencia e para pupar tempo deixei aqui mesmo
             $product = (new Product)->findById($productSale['product_id']);
 
             $productCategory = (new ProductCategory)->findById($product['category_id']);
 
-            $check = $product['stock'] > $productSale['quantity'] &&
+            $check = $product['stock'] >= $productSale['quantity'] &&
                 $product['value'] == $productSale['current_value'] &&
                 $productCategory['tax'] == $productSale['current_tax'];
 
+            $totalTax += $productSale['current_tax'] * $productSale['quantity'];
+            $totalValue += $productSale['current_value'] * $productSale['quantity'];
+
+            var_dump($check);
             if (!$check)
                 break;
         }
-
-        return $check;
+        return $check && $sale['total_tax'] == $totalTax && $sale['total_value'] == $totalValue;
     }
 
     private function registrateSale(array $sale)
     {
         try {
-            $this->sale->beginTransaction(); //Create transaction
+            $db = new Database();
+            $db->beginTransaction(); //Create transaction
+
             //registrate sale into database
             $this->sale->create($sale);
+            $saleId = $this->sale->getLastInsertId();
+            $this->sale->__destruct();
 
             //Create ProductSale and update stock into products table
             $this->productSale->createMany(
                 $sale['product_sales'],
-                $this->sale->getLastInsertId()
+                $saleId
             );
 
-            $this->sale->commit();
+            $db->commit();
         } catch (Exception $e) {
-            $this->sale->rollBack();
+            $db->rollBack();
             throw new Exception($e->getMessage(), 400);
         }
+        return true;
     }
 }

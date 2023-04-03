@@ -36,6 +36,8 @@ class Product extends BaseModel
         $query = "UPDATE products SET stock = :stock WHERE id = :id;";
 
         $dbResponse = $this->dbConnection->prepare($query);
-        return $dbResponse->execute(['stock' => $quantity, 'id' => $productId]);
+
+        $product = $this->findById($productId);
+        return $dbResponse->execute(['stock' => ($product['stock'] - $quantity), 'id' => $productId]);
     }
 }
