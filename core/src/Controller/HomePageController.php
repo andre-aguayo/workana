@@ -2,10 +2,13 @@
 
 namespace Src\Controller;
 
+use Src\Model\Product\Product;
+use Src\Model\Product\ProductParent;
+
 class HomePageController
 {
     public function index()
     {
-        return;
+        return (new Product)->getAllWithParent();
     }
 }

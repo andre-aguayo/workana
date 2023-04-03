@@ -17,19 +17,31 @@ class Database
         "options" => [
             PDO::MYSQL_ATTR_INIT_COMMAND    => 'SET NAMES utf8',
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-            PDO::ATTR_CASE => PDO::CASE_NATURAL
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_CASE => PDO::CASE_NATURAL,
+            PDO::ATTR_EMULATE_PREPARES, false
         ]
     ];
 
+    /**
+     * Is a pdo connection
+     */
     private $pdo;
 
     public function __construct()
     {
-        $this->connect();
+        $this->pdo = $this->connect();
     }
 
-    protected function connect()
+    /**
+     * @return PDO conneciton
+     */
+    public function getConnection()
+    {
+        return $this->pdo;
+    }
+
+    private function connect()
     {
         $dsn = $this->databaseConfig['driver'] .
             ":host=" .
@@ -39,16 +51,17 @@ class Database
             ";charset=UTF8";
 
         try {
-            $this->pdo = new PDO(
+            $pdo = new PDO(
                 $dsn,
                 $this->databaseConfig['username'],
                 $this->databaseConfig['password'],
                 $this->databaseConfig['options']
             );
 
-            if (!$this->pdo) {
+            if (!$pdo)
                 throw new PDOException('Connection to database failed.', 500);
-            }
+
+            return $pdo;
         } catch (PDOException $e) {
             echo $e->getMessage();
         }

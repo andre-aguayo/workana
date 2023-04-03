@@ -11,6 +11,16 @@ class ProductRequest
 
     public function create(array $uriPaths, string $httpMethod, array $request): bool
     {
-        return false;
+        return $uriPaths[1] === 'product' &&
+            $uriPaths[2] === 'create' &&
+            $httpMethod === 'POST' &&
+            ( //Product request params
+                is_string($request['name']) && //check product name
+                is_numeric($request['value']) && //check value
+                $request['value'] >= 0 && //check value
+                is_numeric($request['stock']) && //check product stock
+                $request['stock'] >= 0 && //check product stock
+                is_numeric($request['category_id']) //check product_category_id
+            );
     }
 }

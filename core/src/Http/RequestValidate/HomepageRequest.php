@@ -7,8 +7,8 @@ namespace Src\Http\RequestValidate;
  */
 class HomepageRequest
 {
-    static public function index(array $uriExplode, string $httpMethond): bool
+    static public function index(array $arrUri, string $httpMethond): bool
     {
-        return ($uriExplode[1] === '' || is_numeric($uriExplode[1])) && $httpMethond === 'GET';
+        return ($arrUri[1] === '' || is_numeric($arrUri[1])) && $httpMethond === 'GET';
     }
 }
