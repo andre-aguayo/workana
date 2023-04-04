@@ -34,6 +34,10 @@ Ou manualmente na raiz do projeto:
     docker compose exec -T mysql mysql -uiurru -p5533 iurru < ./ && devops/tables.sql
 
 ```
+## Vizualização
+
+- O Back-end da aplicação esta na porta 8000
+- O front-end da aplicação esta na porta 80
 
 ## Documentação 
 
