@@ -16,9 +16,7 @@
           </li>
         </ul>
         <form class="d-flex">
-          <input class="form-control me-2" type="search" :placeholder="$t('navBar.search')"
-            :aria-label="$t('navBar.search')">
-          <button class="btn btn-outline-success" type="submit">{{ $t('navBar.search') }}</button>
+
         </form>
       </div>
     </div>
