@@ -19,3 +19,6 @@ fast_install:
 	make frontend_install 
 	make up_containers 
 	make create_tables
+
+run_tests:
+	./core/vendor/bin/phpunit  ./core/Tests 
