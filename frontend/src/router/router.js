@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "@/Pages/HomePage";
-import ProductInformations from "@/Pages/Products/ProductInformations";
 import i18n from "../i18n/index.js";
+import CreateProduct from "@/Pages/Products/CreateProduct";
+import Create from "@/Pages/ProductCategory/Create";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -10,13 +11,16 @@ const router = createRouter({
       name: i18n.global.t("home.title"),
       path: "",
       component: HomePage,
-      product: [
-        {
-          name: i18n.global.t("product.title"),
-          path: "/product/:productId",
-          component: ProductInformations,
-        },
-      ],
+    },
+    {
+      name: i18n.global.t("product.title"),
+      path: "/product/create",
+      component: CreateProduct,
+    },
+    {
+      name: i18n.global.t("productCategory.create.title"),
+      path: "/product-category/create",
+      component: Create,
     },
   ],
 });

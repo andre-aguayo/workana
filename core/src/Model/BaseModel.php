@@ -48,7 +48,7 @@ abstract class BaseModel
     /**
      * Get all corresponding table
      */
-    public function getAll(?string $tableName, ?int $limit, ?int $offset): array
+    public function getAll(string $tableName = null, int $limit = 0, int $offset = 0): array
     {
         if ($tableName === null)
             $tableName = $this->tableName;
@@ -66,7 +66,7 @@ abstract class BaseModel
             }
         }
 
-        $this->dbResponse = $this->dbConnection->prepare($query . " ORDER BY id DESC");
+        $this->dbResponse = $this->dbConnection->prepare($query . " ORDER BY id DESC;");
         $this->dbResponse->execute($params);
         return $this->dbResponse->fetchAll();
     }

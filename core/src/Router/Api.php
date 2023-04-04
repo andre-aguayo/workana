@@ -42,6 +42,9 @@ class Api
             case ((new ProductRequest)->create($uriPaths, $this->httpMethod, $this->request)):
                 $controllerResponse = (new ProductController)->create($this->request);
                 break;
+            case ((new ProductCategoryRequest)->index($uriPaths, $this->httpMethod, $this->request)):
+                $controllerResponse = (new ProductCategoryController)->index($this->request);
+                break;
             case ((new ProductCategoryRequest)->create($uriPaths, $this->httpMethod, $this->request)):
                 $controllerResponse = (new ProductCategoryController)->create($this->request);
                 break;

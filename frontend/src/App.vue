@@ -1,12 +1,18 @@
 <template>
-  <section>
-    <topNavBar />
+  <topNavBar />
+  <main role="main" class="container">
     <router-view />
-  </section>
+  </main>
 </template>
 <script>
 import topNavBar from "./components/navBar/topNavBar.vue";
+
 export default {
   components: { topNavBar },
 };
 </script>
+<style scoped>
+main {
+  margin-top: 90px;
+}
+</style>

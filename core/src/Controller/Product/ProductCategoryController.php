@@ -11,6 +11,11 @@ class ProductCategoryController
     ) {
     }
 
+    public function index()
+    {
+        return $this->productCategory->getAll();
+    }
+
     /**
      * @param array $requestParams is a params of create product
      * @return array product
