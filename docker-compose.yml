@@ -2,7 +2,9 @@ version: "3.9"
 
 services:
   mysql:
-    image: "mysql/mysql-server:8.0"
+    build:
+      target: mysql
+      context: ./devops
     ports:
       - "${DB_PORT}:${DB_PORT}"
     environment:
@@ -14,7 +16,6 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
       - "./data:/var/lib/mysql"
-      - ./devops/dump.sql:/docker-entrypoint-initdb.d/dump.sql
   web:
     build:
       target: web
@@ -39,7 +40,6 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
     image: frontend
     ports:
       - "${CLIENT_PORT}:3000"
