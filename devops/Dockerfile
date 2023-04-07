@@ -8,15 +8,3 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql
 
 FROM mysql/mysql-server:8.0 as mysql
 ADD ./tables.sql /docker-entrypoint-initdb.d/
-
-
-FROM node:16 as frontend
-WORKDIR /app
-
-COPY ../frontend/package.json .
-RUN yarn install
-
-COPY ./frontend  .
-
-EXPOSE 3000
-CMD ["yarn", "serve"]
