@@ -40,11 +40,9 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
-    image: frontend
+      dockerfile: ../devops/Dockerfile
+      target: frontend
     ports:
       - "${CLIENT_PORT}:3000"
     volumes:
       - ./frontend:/app
-    depends_on:
-      - core
