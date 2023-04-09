@@ -16,6 +16,7 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
       - "./data:/var/lib/mysql"
+    mem_limit: 100M
   web:
     build:
       target: web
@@ -29,6 +30,7 @@ services:
       - core
     depends_on:
       - core
+    mem_limit: 100M
   core:
     build:
       target: core
@@ -37,12 +39,14 @@ services:
       - ./core:/var/www/html
     depends_on:
       - mysql
+    mem_limit: 100M
   frontend:
     build:
       context: ./frontend
-      dockerfile: ../devops/Dockerfile
+      dockerfile: ./Dockerfile
       target: frontend
     ports:
       - "${CLIENT_PORT}:3000"
     volumes:
       - ./frontend:/app
+    mem_limit: 100M
