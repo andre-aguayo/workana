@@ -1,8 +1,0 @@
-build:
-  docker:
-    mysql: ./devops/Dockerfile
-    core: ./devops/Dockerfile
-    web: ./devops/Dockerfile
-    frontend: ./frontend/Dockerfile
-run:
-  web: bundle exec puma -C config/puma.rb
