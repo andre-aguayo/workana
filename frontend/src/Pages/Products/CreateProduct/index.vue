@@ -67,10 +67,10 @@ export default {
       }
 
       const response = await createProduct(product, async (data) => {
-        console.log(data);
+        console.log(data.data);
         return await data.data;
       });
-      if (response.success) {
+      if (response.created) {
         return alert(this.$i18n.t('product.create.success'));
       } else {
         return alert(this.$i18n.t('product.create.errors.success'));

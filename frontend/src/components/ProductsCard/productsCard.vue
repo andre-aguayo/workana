@@ -6,10 +6,18 @@
       </div>
       <div class="card-body flip-card-back">
         <h5 class="card-title">{{ name }}</h5>
-        <span class="card-text value">R$ {{ (value / 100).toFixed(2) }}</span>
-        <span class="card-text"><span>{{ $t('product.label.tax') }}: </span>{{ tax }}%</span>
-        <span class="card-text"><span>{{ $t('product.label.product_category') }}: </span>{{ category_name }}</span>
-        <button class="btn btn-success" @click="addToCart(id, value, tax, name)">{{ $t('product.addToCart') }}</button>
+        <div>
+          <span class="card-text value">R$ {{ (value / 100).toFixed(2) }}</span>
+        </div>
+        <div>
+          <span class="card-text"><span>{{ $t('product.label.tax') }}: </span>{{ tax }}%</span>
+        </div>
+        <div>
+          <span class="card-text"><span>{{ $t('product.label.product_category') }}: </span>{{ category_name }}</span>
+        </div>
+        <div>
+          <button class="btn btn-success" @click="addToCart(id, value, tax, name)">{{ $t('product.addToCart') }}</button>
+        </div>
       </div>
     </div>
   </div>
@@ -76,7 +84,7 @@ img {
 }
 
 .value {
-  color: rgb(0, 0, 0)
+  color: rgba(0, 141, 229, 0.841)
 }
 
 .flip-card {
@@ -105,7 +113,6 @@ img {
   width: 100%;
   height: 100%;
   -webkit-backface-visibility: hidden;
-
   backface-visibility: hidden;
 }
 
@@ -115,9 +122,25 @@ img {
 }
 
 .flip-card-back {
-  background-color: dodgerblue;
+  background-color: rgb(0, 0, 0);
   color: white;
   transform: rotateY(180deg);
+}
+
+.btn-success {
+  background-color: transparent;
+  color: rgba(4, 130, 208, 0.84);
+  border-radius: 8px;
+  font-weight: 600;
+  border: 3px solid rgba(4, 130, 208, 0.84);
+}
+
+.btn-success:hover {
+  background-color: rgba(4, 130, 208, 0.84);
+  color: rgb(0, 0, 0);
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
 }
 
 .mr-3 {
