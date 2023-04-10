@@ -1,14 +1,16 @@
 <template >
-  <div class="card" style="width: 18rem;">
-    <img :src="randomImage()" class="card-img-top">
-    <div class="card-body">
-      <h5 class="card-title">{{ name }}</h5>
-      <p class="card-text value">R$ {{ (value / 100).toFixed(2) }}</p>
-      <p class="card-text"><span>{{ $t('product.label.tax') }}: </span>{{ tax }}%</p>
-      <p class="card-text"><span>{{ $t('product.label.product_category') }}: </span>{{ category_name }}</p>
-    </div>
-    <div class="card-footer">
-      <button class="btn btn-success" @click="addToCart(id, value, tax)">{{ $t('product.addToCart') }}</button>
+  <div class="card flip-card mr-3 mt-3 mb-5 ">
+    <div class="flip-card-inner">
+      <div class="card-body flip-card-front">
+        <img :src="randomImage()" class="card-img-top">
+      </div>
+      <div class="card-body flip-card-back">
+        <h5 class="card-title">{{ name }}</h5>
+        <span class="card-text value">R$ {{ (value / 100).toFixed(2) }}</span>
+        <span class="card-text"><span>{{ $t('product.label.tax') }}: </span>{{ tax }}%</span>
+        <span class="card-text"><span>{{ $t('product.label.product_category') }}: </span>{{ category_name }}</span>
+        <button class="btn btn-success" @click="addToCart(id, value, tax, name)">{{ $t('product.addToCart') }}</button>
+      </div>
     </div>
   </div>
 </template>
@@ -32,21 +34,23 @@ export default {
       let randindex = Math.floor(0 + Math.random() * (this.imageUrl.length - 1));
       return this.imageUrl[randindex];
     },
-    addToCart(productId, value, tax) {
+    addToCart(productId, value, tax, name) {
       let cart = VueCookies.get('cart');
 
       if (cart == null) {
-        cart = [{ id: productId, quantity: 1, current_value: value, current_tax: tax }];
+        cart = [{ id: productId, quantity: 1, current_value: value, current_tax: tax, name: name }];
       } else {
         const index = cart.findIndex((product) => product.id == productId);
         if (index >= 0) {
           const quantity = cart[index].quantity + 1;
           cart[index] = { ...cart[index], quantity };
         } else {
-          let newCart = { id: productId, quantity: 1, current_value: value, current_tax: tax };
+          let newCart = { id: productId, quantity: 1, current_value: value, current_tax: tax, name: name };
           cart.push(newCart);
         }
       }
+
+      this.$parent.$parent.$parent.cart = cart;
       VueCookies.set('cart', cart, "1h");
     }
   },
@@ -54,8 +58,16 @@ export default {
 </script>
 <style scoped>
 img {
-  height: 12rem;
-  width: 18rem;
+  height: 100%;
+  width: 100%;
+}
+
+.card {
+  border: none;
+}
+
+.card-body {
+  padding: 0;
 }
 
 .card-footer {
@@ -65,5 +77,50 @@ img {
 
 .value {
   color: rgb(0, 0, 0)
+}
+
+.flip-card {
+  background-color: transparent;
+  width: 18rem;
+  height: 10rem;
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+
+  backface-visibility: hidden;
+}
+
+.flip-card-front {
+
+  color: black;
+}
+
+.flip-card-back {
+  background-color: dodgerblue;
+  color: white;
+  transform: rotateY(180deg);
+}
+
+.mr-3 {
+  margin-right: 1rem;
 }
 </style>

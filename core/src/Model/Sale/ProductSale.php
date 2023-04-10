@@ -33,10 +33,12 @@ class ProductSale extends BaseModel
     public function createMany(array $productSales, int $saleId): bool
     {
         foreach ($productSales as $productSale) {
+            unset($productSale['name']);
+
             $this->create([...$productSale, 'sale_id' => $saleId]);
 
             //discount into product stock the sale
-            (new Product)->productSale($productSale['quantity'], $productSale['product_id']);
+            (new Product)->productSale($productSale['quantity'], $productSale['id']);
         }
         return true;
     }
@@ -50,7 +52,7 @@ class ProductSale extends BaseModel
     {
         $dbResponse = $this->dbConnection->prepare(
             "INSERT INTO product_sales (sale_id, product_id, quantity, current_value, current_tax) 
-                     VALUES (:sale_id, :product_id, :quantity, :current_value, :current_tax)"
+                     VALUES (:sale_id, :id, :quantity, :current_value, :current_tax)"
         );
         return $dbResponse->execute($values);
     }

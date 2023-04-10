@@ -13,8 +13,7 @@ class SaleRequest
                 is_numeric($request['total_value']) &&
                 $request['total_value'] >= 0 &&
                 is_numeric($request['total_tax']) &&
-                $request['total_tax'] >= 0 &&
-                count($request) === 3 //maximum parameters
+                $request['total_tax'] >= 0
             ) &&
             ( //Products sale
                 is_array($request['product_sales']) &&
@@ -32,15 +31,14 @@ class SaleRequest
         $check = true;
         foreach ($productSales as $productSale) {
             if (
-                is_numeric($productSale['product_id']) &&
-                $productSale['product_id'] > 0 &&
+                is_numeric($productSale['id']) &&
+                $productSale['id'] > 0 &&
                 is_numeric($productSale['quantity']) &&
                 $productSale['quantity'] > 0 &&
                 is_numeric($productSale['current_value']) &&
                 $productSale['current_value'] > 0 &&
                 is_numeric($productSale['current_tax']) &&
-                $productSale['current_tax'] > 0 &&
-                count($productSale) === 4
+                $productSale['current_tax'] > 0
             ) {
                 $check = false;
             }

@@ -34,9 +34,7 @@ export default {
 
       const product = {
         name: this.name,
-        value: parseInt((this.value * 10)),
-        stock: parseInt(this.quantity),
-        category_id: this.category_id
+        tax: parseInt((this.tax * 10)),
       }
 
       const response = await createProductCategory(product, async (data) => {
