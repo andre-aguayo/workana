@@ -77,11 +77,13 @@ export default {
       sale.product_sales = vm.products;
 
       let response = await buyProducts(sale, async (data) => {
-        return await data.data;
+        return await data;
       });
 
       if (response.success) {
         alert('Compra realizada com sucesso.');
+        vm.cart = vm.products = [];
+        VueCookies.set('cart', null, "1h");
       }
     }
   }
