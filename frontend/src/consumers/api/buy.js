@@ -7,7 +7,8 @@ import { API_BASE_URL } from "../config/constants";
  * @param {String} url Api url address
  * @returns
  */
-export function createProduct(data, callback, uri = "product/create") {
+export function buyProducts(data, callback, uri = "sale/create") {
+  console.log(data);
   return axios
     .post(API_BASE_URL + uri, data)
     .then(({ data }) => callback && callback(data))

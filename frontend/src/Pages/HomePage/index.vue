@@ -4,14 +4,14 @@
     <div class="card-header">
       <h3>{{ $t('home.title') }}</h3>
     </div>
-    <div class="row" v-if="this.productCategories.length > 0">
-      <div class="col-md-3" v-for="productCategory in this.productCategories" :key="productCategory">
+    <div class="row justify-content-center" v-if="productCategories">
+      <div class="d-contents" v-for="productCategory in productCategories" :key="productCategory">
         <div v-for="product in productCategory.products" :key="product">
           <productsCard :name="product.name" :value="product.value" :tax="productCategory.tax" :id="product.id"
             :category_name="productCategory.name" />
         </div>
       </div>
-    </div>  
+    </div>
   </div>
 </template>
 <script>
@@ -27,7 +27,10 @@ export default {
   methods: {
     async build() {
       this.productCategories = await productCategoriesWithProducts(async (data) => {
-        return await data.data;
+        if (data.success)
+          return await data.data;
+
+        return [];
       });
       return;
     },
@@ -38,3 +41,12 @@ export default {
   components: { productsCard },
 }
 </script>
+<style scoped>
+.d-contents {
+  display: contents !important;
+}
+
+.row {
+  margin: 0 !important;
+}
+</style>

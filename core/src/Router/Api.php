@@ -30,7 +30,7 @@ class Api
      */
     public function route(): string
     {
-        $uriPaths = explode('/', $this->uri);
+        $uriPaths = explode('/',  str_replace('//', '/', $this->uri));
 
         switch (true) {
             case ((new HomepageRequest)->index($uriPaths, $this->httpMethod)):

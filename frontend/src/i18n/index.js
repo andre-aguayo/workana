@@ -4,6 +4,7 @@ const i18n = createI18n({
   locale: "br",
   messages: {
     br: {
+      moneyUnity: "R$",
       AppTitle: "Workana",
       save: "Salvar",
       home: {
@@ -55,6 +56,19 @@ const i18n = createI18n({
           path: "/product-category/create",
         },
         search: "Pesquisar",
+        bottomNavBar: {
+          total: "Valor Total do carrinho:",
+          quantity: "Itens",
+        },
+      },
+      cart: {
+        title: {
+          name: "Produto",
+          value: "Valor",
+          remove: "Diminuir",
+          quantity: "Quantidade",
+          add: "Adicionar",
+        },
       },
     },
   },

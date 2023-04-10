@@ -7,7 +7,7 @@ import { API_BASE_URL } from "../config/constants";
  * @param {String} url Api url address
  * @returns
  */
-export function listProductCategory(callback, uri = "/product-category/list") {
+export function listProductCategory(callback, uri = "product-category/list") {
   return axios
     .get(API_BASE_URL + uri)
     .then(({ data }) => callback && callback(data))
@@ -20,7 +20,11 @@ export function listProductCategory(callback, uri = "/product-category/list") {
  * @param {String} url Api url address
  * @returns
  */
-export function createProductCategory(data, callback, uri = "/product-category/create") {
+export function createProductCategory(
+  data,
+  callback,
+  uri = "/product-category/create"
+) {
   return axios
     .post(API_BASE_URL + uri, data)
     .then(({ data }) => callback && callback(data))

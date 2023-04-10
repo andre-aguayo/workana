@@ -39,7 +39,7 @@ class SaleService implements SaleServiceInterface
         $totalValue = 0;
         foreach ($sale['product_sales'] as $productSale) {
             //Eu teria colocado esta requisiçao separada em um product service mas por conveiencia e para pupar tempo deixei aqui mesmo
-            $product = (new Product)->findById($productSale['product_id']);
+            $product = (new Product)->findById($productSale['id']);
 
             $productCategory = (new ProductCategory)->findById($product['category_id']);
 
@@ -48,13 +48,12 @@ class SaleService implements SaleServiceInterface
                 $productCategory['tax'] == $productSale['current_tax'];
 
             $totalTax += $productSale['current_tax'] * $productSale['quantity'];
-            $totalValue += $productSale['current_value'] * $productSale['quantity'];
+            $totalValue += $productSale['current_value'] * $productSale['quantity'] / 100;
 
-            var_dump($check);
             if (!$check)
                 break;
         }
-        return $check && $sale['total_tax'] == $totalTax && $sale['total_value'] == $totalValue;
+        return $check && $sale['total_tax'] == $totalTax;
     }
 
     private function registrateSale(array $sale)
@@ -62,7 +61,6 @@ class SaleService implements SaleServiceInterface
         try {
             $db = new Database();
             $db->beginTransaction(); //Create transaction
-
             //registrate sale into database
             $this->sale->create($sale);
             $saleId = $this->sale->getLastInsertId();
